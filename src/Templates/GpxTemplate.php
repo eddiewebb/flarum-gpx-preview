@@ -2,9 +2,8 @@
 
 namespace Webbinaro\GpxPreview\Templates;
 
-use FoF\Upload\Templates\AbstractTemplate;
 
-class GpxTemplate extends AbstractTemplate
+class GpxTemplate extends \FoF\Upload\Templates\AbstractTextFormatterTemplate
 {
     /**
      * @var string
@@ -16,7 +15,7 @@ class GpxTemplate extends AbstractTemplate
      *
      * @return string
      */
-    public function name()
+    public function name(): string
     {
         return $this->trans('gpx-preview.admin.templates.gpx');
     }
@@ -24,7 +23,7 @@ class GpxTemplate extends AbstractTemplate
     /**
      * {@inheritdoc}
      */
-    public function description()
+    public function description(): string
     {
         return $this->trans('fof-upload.admin.templates.file_description');
     }
@@ -34,7 +33,7 @@ class GpxTemplate extends AbstractTemplate
      *
      * @return string
      */
-    public function template()
+    public function template(): string
     {
         return $this->getView('fof-upload.templates::gpx');
     }
@@ -44,7 +43,7 @@ class GpxTemplate extends AbstractTemplate
      *
      * @return string
      */
-    public function bbcode()
+    public function bbcode(): string
     {
         return '[upl-file uuid={IDENTIFIER} size={SIMPLETEXT2} url={URL}]{SIMPLETEXT1}[/upl-file]';
     }

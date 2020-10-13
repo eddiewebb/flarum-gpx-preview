@@ -4,9 +4,8 @@ namespace Webbinaro\GpxPreview\Providers;
 
 use FoF\Upload\Helpers\Settings;
 use Webbinaro\GpxPreview\Templates\GpxTemplate;
-use Flarum\Foundation\AbstractServiceProvider;
 
-class GpxPreviewProvider extends AbstractServiceProvider
+class GpxPreviewProvider extends \Flarum\Foundation\AbstractServiceProvider
 {
     public function register()
     {
