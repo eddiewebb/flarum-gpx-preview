@@ -1,0 +1,4 @@
+gpx-preview:
+  admin:
+    templates:
+      gpx: GPX Route Preview
