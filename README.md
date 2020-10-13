@@ -19,6 +19,6 @@ Adds GPS Route preview
 
 `composer require webbinaro/gpx-preview`
 
-Configure FoF/Uploads to add the new GPX Template for `^application\/.*xml` files.
+Configure FoF/Uploads to add the new GPX Template for `^application/gpx+xml` files.
 
 ![Adding the new template to FOF upload settings](assets/settings.png)
