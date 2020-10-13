@@ -20,6 +20,7 @@ use Psr\Http\Message\ServerRequestInterface as Request;
 return [
 	(new Extend\Frontend('forum'))
         ->js(__DIR__ . '/js/dist/forum.js'),
+    new Extend\Locales(__DIR__ . '/resources/locale'),
     function (Application $app) {
        $app->register(Providers\GpxPreviewProvider::class);
     },
