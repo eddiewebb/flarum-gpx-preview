@@ -426,22 +426,16 @@ __webpack_require__.r(__webpack_exports__);
 
 /* global $ */
 
-console.log(_GPXParser__WEBPACK_IMPORTED_MODULE_3___default.a["default"]);
 /* harmony default export */ __webpack_exports__["default"] = (function () {
   Object(flarum_extend__WEBPACK_IMPORTED_MODULE_1__["extend"])(flarum_components_Post__WEBPACK_IMPORTED_MODULE_2___default.a.prototype, 'config', function (isInitialized) {
-    if (isInitialized) return; //console.log(this);
-    //console.log(this.$('.gpxFile').data('fofUploadDownloadUuid'));
-
-    var url = this.$('.gpxFile').data('mapUrl');
-    console.log(url);
-    console.log(url);
+    if (isInitialized) return; //console.log(this.$('.gpxFile').data('fofUploadDownloadUuid'));
 
     function loadGPXFileIntoGoogleMap(map, filename) {
       $.ajax({
         url: filename,
         dataType: "xml",
         success: function success(data) {
-          console.log("parsing");
+          console.log("parsing GPS file " + filename);
           var parser = new _GPXParser__WEBPACK_IMPORTED_MODULE_3___default.a.GPXParser(data, map);
           parser.setTrackColour("#ff0000"); // Set the track line colour
 
@@ -457,15 +451,20 @@ console.log(_GPXParser__WEBPACK_IMPORTED_MODULE_3___default.a["default"]);
           parser.addWaypointsToMap(); // Add the waypoints
         }
       });
-    }
+    } //for each gpx file in this post, loop and map
 
-    $(document).ready(function () {
+
+    this.$('.gpxFile').each(function (i) {
+      //console.log(this); //'this' is now a matching div with our URL and UUID
+      var url = $(this).data('mapUrl');
+      var mapId = 'map-' + $(this).data('fofUploadDownloadUuid');
+      console.log(url);
+      console.log(mapId);
       var mapOptions = {
         zoom: 8,
         mapTypeId: 'roadmap'
       };
-      var map = new google.maps.Map(document.getElementById("map"), mapOptions);
-      console.log("loading");
+      var map = new google.maps.Map(document.getElementById(mapId), mapOptions);
       loadGPXFileIntoGoogleMap(map, url);
     });
   });

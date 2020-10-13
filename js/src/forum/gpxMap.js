@@ -5,24 +5,16 @@ import GPXParser from './GPXParser';
 
 /* global $ */
 
-console.log(GPXParser.default);
-
 export default function () {
     extend(Post.prototype, 'config', function (isInitialized) {
         if (isInitialized) return;
-        //console.log(this);
         //console.log(this.$('.gpxFile').data('fofUploadDownloadUuid'));
 
-
-        let url = this.$('.gpxFile').data('mapUrl');
-        console.log(url);
-
-        console.log(url);
-         function loadGPXFileIntoGoogleMap(map, filename) {
+        function loadGPXFileIntoGoogleMap(map, filename) {
             $.ajax({url: filename,
                 dataType: "xml",
                 success: function(data) {
-                    console.log("parsing");
+                    console.log("parsing GPS file " + filename);
                   var parser = new GPXParser.GPXParser(data, map);
                   parser.setTrackColour("#ff0000");     // Set the track line colour
                   parser.setTrackWidth(5);          // Set the track line width
@@ -35,15 +27,22 @@ export default function () {
             });
         }
 
-        $(document).ready(function() {
-            var mapOptions = {
-              zoom: 8,
-              mapTypeId: 'roadmap'
-            };
-            var map = new google.maps.Map(document.getElementById("map"),
-                mapOptions);
-            console.log("loading");
-            loadGPXFileIntoGoogleMap(map, url);
+        //for each gpx file in this post, loop and map
+        this.$('.gpxFile').each(function( i ) {
+          //console.log(this); //'this' is now a matching div with our URL and UUID
+          let url = $(this).data('mapUrl');
+          let mapId = 'map-' + $(this).data('fofUploadDownloadUuid');
+          console.log(url);
+          console.log(mapId);
+
+
+          var mapOptions = {
+            zoom: 8,
+            mapTypeId: 'roadmap'
+          };
+          var map = new google.maps.Map(document.getElementById(mapId),mapOptions);
+          loadGPXFileIntoGoogleMap(map, url);
         });
+
     });
 }
