@@ -25,7 +25,7 @@ class GpxTemplate extends \FoF\Upload\Templates\AbstractTextFormatterTemplate
      */
     public function description(): string
     {
-        return $this->trans('fof-upload.admin.templates.file_description');
+        return $this->trans('gpx-preview.admin.templates.gpx.file_description');
     }
 
     /**
