@@ -8,6 +8,7 @@ import GPXParser from './GPXParser';
 export default function () {
     extend(Post.prototype, 'config', function (isInitialized) {
         if (isInitialized) return;
+        let postId = this.props.post.id();
         //console.log(this.$('.gpxFile').data('fofUploadDownloadUuid'));
 
         function loadGPXFileIntoGoogleMap(map, filename) {
@@ -30,11 +31,14 @@ export default function () {
         //for each gpx file in this post, loop and map
         this.$('.gpxFile').each(function( i ) {
           //console.log(this); //'this' is now a matching div with our URL and UUID
-          let url = $(this).data('mapUrl');
+          //let url = $(this).data('mapUrl');
+          let url = app.forum.attribute('apiUrl') + '/fof/download';
+            url += '/' + $(this).data('fofUploadDownloadUuid');
+            url += '/' + postId;
+            url += '/' + app.session.csrfToken;
           let mapId = 'map-' + $(this).data('fofUploadDownloadUuid');
           console.log(url);
           console.log(mapId);
-
 
           var mapOptions = {
             zoom: 8,
