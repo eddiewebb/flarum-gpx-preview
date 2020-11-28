@@ -6,9 +6,9 @@ import GPXParser from './GPXParser';
 /* global $ */
 
 export default function () {
-    extend(Post.prototype, 'config', function (isInitialized) {
+    extend(Post.prototype, 'oncreate', function (isInitialized) {
         if (isInitialized) return;
-        let postId = this.props.post.id();
+        let postId = this.attrs.post.id();
         //console.log(this.$('.gpxFile').data('fofUploadDownloadUuid'));
 
         function loadGPXFileIntoGoogleMap(map, filename) {
