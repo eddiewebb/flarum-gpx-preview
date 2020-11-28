@@ -30,9 +30,9 @@
     "flarum-extension": {
       "title": "GPX Preview",
       "icon": {
-        "name": "fas fa-route-alt",
-        "backgroundColor": "",
-        "color": ""
+        "name": "fas fa-route",
+        "backgroundColor": "#4C804D",
+        "color": "#fff"
       }
     },
     "flagrow": {
