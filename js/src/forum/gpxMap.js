@@ -6,11 +6,10 @@ import GPXParser from './GPXParser';
 /* global $ */
 
 export default function () {
-    extend(Post.prototype, 'oncreate', function (isInitialized) {
-        if (isInitialized) return;
-        let postId = this.attrs.post.id();
-        //console.log(this.$('.gpxFile').data('fofUploadDownloadUuid'));
 
+    extend(Post.prototype, 'oncreate', function () {
+        let postId = this.attrs.post.id();
+        
         function loadGPXFileIntoGoogleMap(map, filename) {
             $.ajax({url: filename,
                 dataType: "xml",

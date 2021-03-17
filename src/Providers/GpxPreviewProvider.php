@@ -2,18 +2,20 @@
 
 namespace Webbinaro\GpxPreview\Providers;
 
-use FoF\Upload\Helpers\Settings;
+use FoF\Upload\Helpers\Util;
 use Webbinaro\GpxPreview\Templates\GpxTemplate;
+use Flarum\Settings\SettingsRepositoryInterface;
 
 class GpxPreviewProvider extends \Flarum\Foundation\AbstractServiceProvider
-{
+{    
+	
+
     public function register()
     {
-        $this->loadViewsFrom(__DIR__ . '/../../resources/templates', 'fof-upload.templates');
+       
+        /** @var Util $util */
+        $util = $this->app->make(Util::class);
 
-        /** @var Settings $settings */
-        $settings = $this->app->make(Settings::class);
-
-        $settings->addRenderTemplate($this->app->make(GpxTemplate::class));
+        $util->addRenderTemplate($this->app->make(GpxTemplate::class));
     }
 }
