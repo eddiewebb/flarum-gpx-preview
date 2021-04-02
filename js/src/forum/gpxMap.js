@@ -6,7 +6,6 @@ import GPXParser from './GPXParser';
 /* global $ */
 
 export default function () {
-
     extend(Post.prototype, 'oncreate', function () {
         let postId = this.attrs.post.id();
         
@@ -14,7 +13,7 @@ export default function () {
             $.ajax({url: filename,
                 dataType: "xml",
                 success: function(data) {
-                    console.log("parsing GPS file " + filename);
+                  console.debug("parsing GPS file " + filename);
                   var parser = new GPXParser.GPXParser(data, map);
                   parser.setTrackColour("#ff0000");     // Set the track line colour
                   parser.setTrackWidth(5);          // Set the track line width
@@ -36,8 +35,8 @@ export default function () {
             url += '/' + postId;
             url += '/' + app.session.csrfToken;
           let mapId = 'map-' + $(this).data('fofUploadDownloadUuid');
-          console.log(url);
-          console.log(mapId);
+          console.debug(url);
+          console.debug(mapId);
 
           var mapOptions = {
             zoom: 8,
