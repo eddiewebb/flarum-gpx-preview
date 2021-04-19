@@ -1,2 +1,648 @@
-module.exports=function(t){var e={};function o(a){if(e[a])return e[a].exports;var n=e[a]={i:a,l:!1,exports:{}};return t[a].call(n.exports,n,n.exports,o),n.l=!0,n.exports}return o.m=t,o.c=e,o.d=function(t,e,a){o.o(t,e)||Object.defineProperty(t,e,{enumerable:!0,get:a})},o.r=function(t){"undefined"!=typeof Symbol&&Symbol.toStringTag&&Object.defineProperty(t,Symbol.toStringTag,{value:"Module"}),Object.defineProperty(t,"__esModule",{value:!0})},o.t=function(t,e){if(1&e&&(t=o(t)),8&e)return t;if(4&e&&"object"==typeof t&&t&&t.__esModule)return t;var a=Object.create(null);if(o.r(a),Object.defineProperty(a,"default",{enumerable:!0,value:t}),2&e&&"string"!=typeof t)for(var n in t)o.d(a,n,function(e){return t[e]}.bind(null,n));return a},o.n=function(t){var e=t&&t.__esModule?function(){return t.default}:function(){return t};return o.d(e,"a",e),e},o.o=function(t,e){return Object.prototype.hasOwnProperty.call(t,e)},o.p="",o(o.s=4)}([function(t,e){t.exports=flarum.core.compat.app},function(t,e){t.exports=flarum.core.compat.extend},function(t,e){t.exports=flarum.core.compat["components/Post"]},function(t,e){function o(t,e){this.xmlDoc=t,this.map=e,this.trackcolour="#ff00ff",this.trackwidth=5,this.mintrackpointdelta=1e-4}o.prototype.setTrackColour=function(t){this.trackcolour=t},o.prototype.setTrackWidth=function(t){this.trackwidth=t},o.prototype.setMinTrackPointDelta=function(t){this.mintrackpointdelta=t},o.prototype.translateName=function(t){return"wpt"==t?"Waypoint":"trkpt"==t?"Track Point":"rtept"==t?"Route Point":void 0},o.prototype.createMarker=function(t){var e=parseFloat(t.getAttribute("lon")),o=parseFloat(t.getAttribute("lat")),a="",n=t.getElementsByTagName("html");if(n.length>0)for(i=0;i<n.item(0).childNodes.length;i++)a+=n.item(0).childNodes[i].nodeValue;else{a="<b>"+this.translateName(t.nodeName)+"</b><br>";var r=t.attributes,s=r.length;for(i=0;i<s;i++)a+=r.item(i).name+" = "+r.item(i).nodeValue+"<br>";if(t.hasChildNodes){var l=t.childNodes,p=l.length;for(i=0;i<p;i++)1==l[i].nodeType&&null!=l[i].firstChild&&(a+=l[i].nodeName+" = "+l[i].firstChild.nodeValue+"<br>")}}var g=new google.maps.Marker({position:new google.maps.LatLng(o,e),map:this.map}),u=new google.maps.InfoWindow({content:a,size:new google.maps.Size(50,50)});google.maps.event.addListener(g,"click",(function(){u.open(this.map,g)}))},o.prototype.addTrackSegmentToMap=function(t,e,o){var a=t.getElementsByTagName("trkpt");if(0!=a.length){var n=[],r=parseFloat(a[0].getAttribute("lon")),i=parseFloat(a[0].getAttribute("lat")),s=new google.maps.LatLng(i,r);n.push(s);for(var l=1;l<a.length;l++){var p=parseFloat(a[l].getAttribute("lon")),g=parseFloat(a[l].getAttribute("lat")),u=g-i,c=p-r;Math.sqrt(u*u+c*c)>this.mintrackpointdelta&&(r=p,i=g,s=new google.maps.LatLng(g,p),n.push(s))}new google.maps.Polyline({path:n,strokeColor:e,strokeWeight:o,map:this.map})}},o.prototype.addTrackToMap=function(t,e,o){for(var a=t.getElementsByTagName("trkseg"),n=0;n<a.length;n++)this.addTrackSegmentToMap(a[n],e,o)},o.prototype.addRouteToMap=function(t,e,o){var a=t.getElementsByTagName("rtept");if(0!=a.length){var n=[],r=parseFloat(a[0].getAttribute("lon")),i=parseFloat(a[0].getAttribute("lat")),s=new google.maps.LatLng(i,r);n.push(s);for(var l=1;l<a.length;l++){var p=parseFloat(a[l].getAttribute("lon")),g=parseFloat(a[l].getAttribute("lat")),u=g-i,c=p-r;Math.sqrt(u*u+c*c)>this.mintrackpointdelta&&(r=p,i=g,s=new google.maps.LatLng(g,p),n.push(s))}new google.maps.Polyline({path:n,strokeColor:e,strokeWeight:o,map:this.map})}},o.prototype.centerAndZoom=function(t){for(var e=new Array("trkpt","rtept","wpt"),o=0,a=0,n=0,r=0,i=0;i<e.length;i++){var s=t.getElementsByTagName(e[i]);s.length>0&&o==a&&0==o&&(o=parseFloat(s[0].getAttribute("lat")),a=parseFloat(s[0].getAttribute("lat")),n=parseFloat(s[0].getAttribute("lon")),r=parseFloat(s[0].getAttribute("lon")));for(var l=0;l<s.length;l++){var p=parseFloat(s[l].getAttribute("lon")),g=parseFloat(s[l].getAttribute("lat"));p<n&&(n=p),p>r&&(r=p),g<o&&(o=g),g>a&&(a=g)}}if(o!=a||0!=o){var u=(r+n)/2,c=(a+o)/2,d=new google.maps.LatLngBounds(new google.maps.LatLng(o,n),new google.maps.LatLng(a,r));this.map.setCenter(new google.maps.LatLng(c,u)),this.map.fitBounds(d)}else this.map.setCenter(new google.maps.LatLng(49.327667,-122.942333),14)},o.prototype.centerAndZoomToLatLngBounds=function(t){for(var e=new google.maps.LatLngBounds,o=0;o<t.length;o++)t[o].isEmpty()||(e.extend(t[o].getSouthWest()),e.extend(t[o].getNorthEast()));var a=(e.getNorthEast().lat()+e.getSouthWest().lat())/2,n=(e.getNorthEast().lng()+e.getSouthWest().lng())/2;this.map.setCenter(new google.maps.LatLng(a,n),this.map.getBoundsZoomLevel(e))},o.prototype.addTrackpointsToMap=function(){for(var t=this.xmlDoc.documentElement.getElementsByTagName("trk"),e=0;e<t.length;e++)this.addTrackToMap(t[e],this.trackcolour,this.trackwidth)},o.prototype.addWaypointsToMap=function(){for(var t=this.xmlDoc.documentElement.getElementsByTagName("wpt"),e=0;e<t.length;e++)this.createMarker(t[e])},o.prototype.addRoutepointsToMap=function(){for(var t=this.xmlDoc.documentElement.getElementsByTagName("rte"),e=0;e<t.length;e++)this.addRouteToMap(t[e],this.trackcolour,this.trackwidth)},e.GPXParser=o},function(t,e,o){"use strict";o.r(e);var a=o(0),n=o.n(a),r=o(1),i=o(2),s=o.n(i),l=o(3),p=o.n(l),g=function(){Object(r.extend)(s.a.prototype,"oncreate",(function(){var t=this.attrs.post.id();this.$(".gpxFile").each((function(e){var o=n.a.forum.attribute("apiUrl")+"/fof/download";o+="/"+$(this).data("fofUploadDownloadUuid"),o+="/"+t,o+="/"+n.a.session.csrfToken;var a="map-"+$(this).data("fofUploadDownloadUuid");console.debug(o),console.debug(a);!function(t,e){$.ajax({url:e,dataType:"xml",success:function(o){console.debug("parsing GPS file "+e);var a=new p.a.GPXParser(o,t);a.setTrackColour("#ff0000"),a.setTrackWidth(5),a.setMinTrackPointDelta(.001),a.centerAndZoom(o),a.addTrackpointsToMap(),a.addRoutepointsToMap(),a.addWaypointsToMap()}})}(new google.maps.Map(document.getElementById(a),{zoom:8,mapTypeId:"roadmap"}),o)}))}))};console.debug("GPX Preview Scanning..."),n.a.initializers.add("gpx-preview",(function(){g()}))}]);
+module.exports =
+/******/ (function(modules) { // webpackBootstrap
+/******/ 	// The module cache
+/******/ 	var installedModules = {};
+/******/
+/******/ 	// The require function
+/******/ 	function __webpack_require__(moduleId) {
+/******/
+/******/ 		// Check if module is in cache
+/******/ 		if(installedModules[moduleId]) {
+/******/ 			return installedModules[moduleId].exports;
+/******/ 		}
+/******/ 		// Create a new module (and put it into the cache)
+/******/ 		var module = installedModules[moduleId] = {
+/******/ 			i: moduleId,
+/******/ 			l: false,
+/******/ 			exports: {}
+/******/ 		};
+/******/
+/******/ 		// Execute the module function
+/******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
+/******/
+/******/ 		// Flag the module as loaded
+/******/ 		module.l = true;
+/******/
+/******/ 		// Return the exports of the module
+/******/ 		return module.exports;
+/******/ 	}
+/******/
+/******/
+/******/ 	// expose the modules object (__webpack_modules__)
+/******/ 	__webpack_require__.m = modules;
+/******/
+/******/ 	// expose the module cache
+/******/ 	__webpack_require__.c = installedModules;
+/******/
+/******/ 	// define getter function for harmony exports
+/******/ 	__webpack_require__.d = function(exports, name, getter) {
+/******/ 		if(!__webpack_require__.o(exports, name)) {
+/******/ 			Object.defineProperty(exports, name, { enumerable: true, get: getter });
+/******/ 		}
+/******/ 	};
+/******/
+/******/ 	// define __esModule on exports
+/******/ 	__webpack_require__.r = function(exports) {
+/******/ 		if(typeof Symbol !== 'undefined' && Symbol.toStringTag) {
+/******/ 			Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
+/******/ 		}
+/******/ 		Object.defineProperty(exports, '__esModule', { value: true });
+/******/ 	};
+/******/
+/******/ 	// create a fake namespace object
+/******/ 	// mode & 1: value is a module id, require it
+/******/ 	// mode & 2: merge all properties of value into the ns
+/******/ 	// mode & 4: return value when already ns object
+/******/ 	// mode & 8|1: behave like require
+/******/ 	__webpack_require__.t = function(value, mode) {
+/******/ 		if(mode & 1) value = __webpack_require__(value);
+/******/ 		if(mode & 8) return value;
+/******/ 		if((mode & 4) && typeof value === 'object' && value && value.__esModule) return value;
+/******/ 		var ns = Object.create(null);
+/******/ 		__webpack_require__.r(ns);
+/******/ 		Object.defineProperty(ns, 'default', { enumerable: true, value: value });
+/******/ 		if(mode & 2 && typeof value != 'string') for(var key in value) __webpack_require__.d(ns, key, function(key) { return value[key]; }.bind(null, key));
+/******/ 		return ns;
+/******/ 	};
+/******/
+/******/ 	// getDefaultExport function for compatibility with non-harmony modules
+/******/ 	__webpack_require__.n = function(module) {
+/******/ 		var getter = module && module.__esModule ?
+/******/ 			function getDefault() { return module['default']; } :
+/******/ 			function getModuleExports() { return module; };
+/******/ 		__webpack_require__.d(getter, 'a', getter);
+/******/ 		return getter;
+/******/ 	};
+/******/
+/******/ 	// Object.prototype.hasOwnProperty.call
+/******/ 	__webpack_require__.o = function(object, property) { return Object.prototype.hasOwnProperty.call(object, property); };
+/******/
+/******/ 	// __webpack_public_path__
+/******/ 	__webpack_require__.p = "";
+/******/
+/******/
+/******/ 	// Load entry module and return exports
+/******/ 	return __webpack_require__(__webpack_require__.s = "./forum.js");
+/******/ })
+/************************************************************************/
+/******/ ({
+
+/***/ "./forum.js":
+/*!******************!*\
+  !*** ./forum.js ***!
+  \******************/
+/*! no exports provided */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _src_forum__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./src/forum */ "./src/forum/index.js");
+/* empty/unused harmony star reexport */
+
+/***/ }),
+
+/***/ "./node_modules/@babel/runtime/helpers/esm/inheritsLoose.js":
+/*!******************************************************************!*\
+  !*** ./node_modules/@babel/runtime/helpers/esm/inheritsLoose.js ***!
+  \******************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return _inheritsLoose; });
+function _inheritsLoose(subClass, superClass) {
+  subClass.prototype = Object.create(superClass.prototype);
+  subClass.prototype.constructor = subClass;
+  subClass.__proto__ = superClass;
+}
+
+/***/ }),
+
+/***/ "./src/forum/File.js":
+/*!***************************!*\
+  !*** ./src/forum/File.js ***!
+  \***************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return File; });
+/* harmony import */ var _babel_runtime_helpers_esm_inheritsLoose__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/helpers/esm/inheritsLoose */ "./node_modules/@babel/runtime/helpers/esm/inheritsLoose.js");
+/* harmony import */ var flarum_app__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! flarum/app */ "flarum/app");
+/* harmony import */ var flarum_app__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(flarum_app__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var flarum_common_Model__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! flarum/common/Model */ "flarum/common/Model");
+/* harmony import */ var flarum_common_Model__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(flarum_common_Model__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var flarum_common_utils_mixin__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! flarum/common/utils/mixin */ "flarum/common/utils/mixin");
+/* harmony import */ var flarum_common_utils_mixin__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(flarum_common_utils_mixin__WEBPACK_IMPORTED_MODULE_3__);
+
+
+
+
+
+var File = /*#__PURE__*/function (_mixin) {
+  Object(_babel_runtime_helpers_esm_inheritsLoose__WEBPACK_IMPORTED_MODULE_0__["default"])(File, _mixin);
+
+  function File() {
+    return _mixin.apply(this, arguments) || this;
+  }
+
+  var _proto = File.prototype;
+
+  /**
+   * Use FoF Uploads endpoint
+   */
+  _proto.apiEndpoint = function apiEndpoint() {
+    return '/fof/uploads' + (this.exists ? '/' + this.data.id : '');
+  }
+  /**
+   * Generate bbcode for this file
+   */
+  ;
+
+  _proto.bbcode = function bbcode() {
+    console.log('checking');
+
+    if (this.tag() == 'gpx') {
+      return "[upl-image uuid=" + this.uuid() + " size=" + this.humanSize() + " url=" + this.url() + "]" + this.baseName() + "[/upl-image]";
+    }
+
+    return flarum_app__WEBPACK_IMPORTED_MODULE_1___default.a.store.models.files.prototype.bbcode(this);
+  };
+
+  return File;
+}(flarum_common_utils_mixin__WEBPACK_IMPORTED_MODULE_3___default()(flarum_common_Model__WEBPACK_IMPORTED_MODULE_2___default.a, {
+  baseName: flarum_common_Model__WEBPACK_IMPORTED_MODULE_2___default.a.attribute('baseName'),
+  path: flarum_common_Model__WEBPACK_IMPORTED_MODULE_2___default.a.attribute('path'),
+  url: flarum_common_Model__WEBPACK_IMPORTED_MODULE_2___default.a.attribute('url'),
+  type: flarum_common_Model__WEBPACK_IMPORTED_MODULE_2___default.a.attribute('type'),
+  size: flarum_common_Model__WEBPACK_IMPORTED_MODULE_2___default.a.attribute('size'),
+  humanSize: flarum_common_Model__WEBPACK_IMPORTED_MODULE_2___default.a.attribute('humanSize'),
+  createdAt: flarum_common_Model__WEBPACK_IMPORTED_MODULE_2___default.a.attribute('createdAt'),
+  uuid: flarum_common_Model__WEBPACK_IMPORTED_MODULE_2___default.a.attribute('uuid'),
+  tag: flarum_common_Model__WEBPACK_IMPORTED_MODULE_2___default.a.attribute('tag'),
+  hidden: flarum_common_Model__WEBPACK_IMPORTED_MODULE_2___default.a.attribute('hidden')
+}));
+
+
+
+/***/ }),
+
+/***/ "./src/forum/GPXParser.js":
+/*!********************************!*\
+  !*** ./src/forum/GPXParser.js ***!
+  \********************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+///////////////////////////////////////////////////////////////////////////////
+// loadgpx.4.js
+//
+// Javascript object to load GPX-format GPS data into Google Maps.
+//
+// Copyright (C) 2006 Kaz Okuda (http://notions.okuda.ca)
+//
+// This program is free software; you can redistribute it and/or
+// modify it under the terms of the GNU General Public License
+// as published by the Free Software Foundation; either version 2
+// of the License, or (at your option) any later version.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with this program; if not, write to the Free Software
+// Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+//
+// If you use this script or have any questions please leave a comment
+// at http://notions.okuda.ca/geotagging/projects-im-working-on/gpx-viewer/
+// A link to the GPL license can also be found there.
+//
+///////////////////////////////////////////////////////////////////////////////
+//
+// History:
+//    revision 1 - Initial implementation
+//    revision 2 - Removed LoadGPXFileIntoGoogleMap and made it the callers
+//                 responsibility.  Added more options (colour, width, delta).
+//    revision 3 - Waypoint parsing now compatible with Firefox.
+//    revision 4 - Upgraded to Google Maps API version 2.  Tried changing the way
+//               that the map calculated the way the center and zoom level, but
+//               GMAP API 2 requires that you center and zoom the map first.
+//               I have left the bounding box calculations commented out in case
+//               they might come in handy in the future.
+//
+//    5/28/2010 - Upgraded to Google Maps API v3 and refactored the file a bit.
+//                          (Chris Peplin)
+//
+// Author: Kaz Okuda
+// URI: http://notions.okuda.ca/geotagging/projects-im-working-on/gpx-viewer/
+//
+// Updated for Google Maps API v3 by Chris Peplin
+// Fork moved to GitHub: https://github.com/peplin/gpxviewer
+//
+///////////////////////////////////////////////////////////////////////////////
+function GPXParser(xmlDoc, map) {
+  this.xmlDoc = xmlDoc;
+  this.map = map;
+  this.trackcolour = "#ff00ff"; // red
+
+  this.trackwidth = 5;
+  this.mintrackpointdelta = 0.0001;
+} // Set the colour of the track line segements.
+
+
+GPXParser.prototype.setTrackColour = function (colour) {
+  this.trackcolour = colour;
+}; // Set the width of the track line segements
+
+
+GPXParser.prototype.setTrackWidth = function (width) {
+  this.trackwidth = width;
+}; // Set the minimum distance between trackpoints.
+// Used to cull unneeded trackpoints from map.
+
+
+GPXParser.prototype.setMinTrackPointDelta = function (delta) {
+  this.mintrackpointdelta = delta;
+};
+
+GPXParser.prototype.translateName = function (name) {
+  if (name == "wpt") {
+    return "Waypoint";
+  } else if (name == "trkpt") {
+    return "Track Point";
+  } else if (name == "rtept") {
+    return "Route Point";
+  }
+};
+
+GPXParser.prototype.createMarker = function (point) {
+  var lon = parseFloat(point.getAttribute("lon"));
+  var lat = parseFloat(point.getAttribute("lat"));
+  var html = "";
+  var pointElements = point.getElementsByTagName("html");
+
+  if (pointElements.length > 0) {
+    for (i = 0; i < pointElements.item(0).childNodes.length; i++) {
+      html += pointElements.item(0).childNodes[i].nodeValue;
+    }
+  } else {
+    // Create the html if it does not exist in the point.
+    html = "<b>" + this.translateName(point.nodeName) + "</b><br>";
+    var attributes = point.attributes;
+    var attrlen = attributes.length;
+
+    for (i = 0; i < attrlen; i++) {
+      html += attributes.item(i).name + " = " + attributes.item(i).nodeValue + "<br>";
+    }
+
+    if (point.hasChildNodes) {
+      var children = point.childNodes;
+      var childrenlen = children.length;
+
+      for (i = 0; i < childrenlen; i++) {
+        // Ignore empty nodes
+        if (children[i].nodeType != 1) continue;
+        if (children[i].firstChild == null) continue;
+        html += children[i].nodeName + " = " + children[i].firstChild.nodeValue + "<br>";
+      }
+    }
+  }
+
+  var marker = new google.maps.Marker({
+    position: new google.maps.LatLng(lat, lon),
+    map: this.map
+  });
+  var infowindow = new google.maps.InfoWindow({
+    content: html,
+    size: new google.maps.Size(50, 50)
+  });
+  google.maps.event.addListener(marker, "click", function () {
+    infowindow.open(this.map, marker);
+  });
+};
+
+GPXParser.prototype.addTrackSegmentToMap = function (trackSegment, colour, width) {
+  var trackpoints = trackSegment.getElementsByTagName("trkpt");
+
+  if (trackpoints.length == 0) {
+    return;
+  }
+
+  var pointarray = []; // process first point
+
+  var lastlon = parseFloat(trackpoints[0].getAttribute("lon"));
+  var lastlat = parseFloat(trackpoints[0].getAttribute("lat"));
+  var latlng = new google.maps.LatLng(lastlat, lastlon);
+  pointarray.push(latlng);
+
+  for (var i = 1; i < trackpoints.length; i++) {
+    var lon = parseFloat(trackpoints[i].getAttribute("lon"));
+    var lat = parseFloat(trackpoints[i].getAttribute("lat")); // Verify that this is far enough away from the last point to be used.
+
+    var latdiff = lat - lastlat;
+    var londiff = lon - lastlon;
+
+    if (Math.sqrt(latdiff * latdiff + londiff * londiff) > this.mintrackpointdelta) {
+      lastlon = lon;
+      lastlat = lat;
+      latlng = new google.maps.LatLng(lat, lon);
+      pointarray.push(latlng);
+    }
+  }
+
+  var polyline = new google.maps.Polyline({
+    path: pointarray,
+    strokeColor: colour,
+    strokeWeight: width,
+    map: this.map
+  });
+};
+
+GPXParser.prototype.addTrackToMap = function (track, colour, width) {
+  var segments = track.getElementsByTagName("trkseg");
+
+  for (var i = 0; i < segments.length; i++) {
+    var segmentlatlngbounds = this.addTrackSegmentToMap(segments[i], colour, width);
+  }
+};
+
+GPXParser.prototype.addRouteToMap = function (route, colour, width) {
+  var routepoints = route.getElementsByTagName("rtept");
+
+  if (routepoints.length == 0) {
+    return;
+  }
+
+  var pointarray = []; // process first point
+
+  var lastlon = parseFloat(routepoints[0].getAttribute("lon"));
+  var lastlat = parseFloat(routepoints[0].getAttribute("lat"));
+  var latlng = new google.maps.LatLng(lastlat, lastlon);
+  pointarray.push(latlng);
+
+  for (var i = 1; i < routepoints.length; i++) {
+    var lon = parseFloat(routepoints[i].getAttribute("lon"));
+    var lat = parseFloat(routepoints[i].getAttribute("lat")); // Verify that this is far enough away from the last point to be used.
+
+    var latdiff = lat - lastlat;
+    var londiff = lon - lastlon;
+
+    if (Math.sqrt(latdiff * latdiff + londiff * londiff) > this.mintrackpointdelta) {
+      lastlon = lon;
+      lastlat = lat;
+      latlng = new google.maps.LatLng(lat, lon);
+      pointarray.push(latlng);
+    }
+  }
+
+  var polyline = new google.maps.Polyline({
+    path: pointarray,
+    strokeColor: colour,
+    strokeWeight: width,
+    map: this.map
+  });
+};
+
+GPXParser.prototype.centerAndZoom = function (trackSegment) {
+  var pointlist = new Array("trkpt", "rtept", "wpt");
+  var minlat = 0;
+  var maxlat = 0;
+  var minlon = 0;
+  var maxlon = 0;
+
+  for (var pointtype = 0; pointtype < pointlist.length; pointtype++) {
+    // Center the map and zoom on the given segment.
+    var trackpoints = trackSegment.getElementsByTagName(pointlist[pointtype]); // If the min and max are uninitialized then initialize them.
+
+    if (trackpoints.length > 0 && minlat == maxlat && minlat == 0) {
+      minlat = parseFloat(trackpoints[0].getAttribute("lat"));
+      maxlat = parseFloat(trackpoints[0].getAttribute("lat"));
+      minlon = parseFloat(trackpoints[0].getAttribute("lon"));
+      maxlon = parseFloat(trackpoints[0].getAttribute("lon"));
+    }
+
+    for (var i = 0; i < trackpoints.length; i++) {
+      var lon = parseFloat(trackpoints[i].getAttribute("lon"));
+      var lat = parseFloat(trackpoints[i].getAttribute("lat"));
+      if (lon < minlon) minlon = lon;
+      if (lon > maxlon) maxlon = lon;
+      if (lat < minlat) minlat = lat;
+      if (lat > maxlat) maxlat = lat;
+    }
+  }
+
+  if (minlat == maxlat && minlat == 0) {
+    this.map.setCenter(new google.maps.LatLng(49.327667, -122.942333), 14);
+    return;
+  } // Center around the middle of the points
+
+
+  var centerlon = (maxlon + minlon) / 2;
+  var centerlat = (maxlat + minlat) / 2;
+  var bounds = new google.maps.LatLngBounds(new google.maps.LatLng(minlat, minlon), new google.maps.LatLng(maxlat, maxlon));
+  this.map.setCenter(new google.maps.LatLng(centerlat, centerlon));
+  this.map.fitBounds(bounds);
+};
+
+GPXParser.prototype.centerAndZoomToLatLngBounds = function (latlngboundsarray) {
+  var boundingbox = new google.maps.LatLngBounds();
+
+  for (var i = 0; i < latlngboundsarray.length; i++) {
+    if (!latlngboundsarray[i].isEmpty()) {
+      boundingbox.extend(latlngboundsarray[i].getSouthWest());
+      boundingbox.extend(latlngboundsarray[i].getNorthEast());
+    }
+  }
+
+  var centerlat = (boundingbox.getNorthEast().lat() + boundingbox.getSouthWest().lat()) / 2;
+  var centerlng = (boundingbox.getNorthEast().lng() + boundingbox.getSouthWest().lng()) / 2;
+  this.map.setCenter(new google.maps.LatLng(centerlat, centerlng), this.map.getBoundsZoomLevel(boundingbox));
+};
+
+GPXParser.prototype.addTrackpointsToMap = function () {
+  var tracks = this.xmlDoc.documentElement.getElementsByTagName("trk");
+
+  for (var i = 0; i < tracks.length; i++) {
+    this.addTrackToMap(tracks[i], this.trackcolour, this.trackwidth);
+  }
+};
+
+GPXParser.prototype.addWaypointsToMap = function () {
+  var waypoints = this.xmlDoc.documentElement.getElementsByTagName("wpt");
+
+  for (var i = 0; i < waypoints.length; i++) {
+    this.createMarker(waypoints[i]);
+  }
+};
+
+GPXParser.prototype.addRoutepointsToMap = function () {
+  var routes = this.xmlDoc.documentElement.getElementsByTagName("rte");
+
+  for (var i = 0; i < routes.length; i++) {
+    this.addRouteToMap(routes[i], this.trackcolour, this.trackwidth);
+  }
+};
+
+exports.GPXParser = GPXParser;
+
+/***/ }),
+
+/***/ "./src/forum/gpxMap.js":
+/*!*****************************!*\
+  !*** ./src/forum/gpxMap.js ***!
+  \*****************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var flarum_app__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! flarum/app */ "flarum/app");
+/* harmony import */ var flarum_app__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(flarum_app__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var flarum_extend__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! flarum/extend */ "flarum/extend");
+/* harmony import */ var flarum_extend__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(flarum_extend__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var flarum_components_Post__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! flarum/components/Post */ "flarum/components/Post");
+/* harmony import */ var flarum_components_Post__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(flarum_components_Post__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _GPXParser__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./GPXParser */ "./src/forum/GPXParser.js");
+/* harmony import */ var _GPXParser__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_GPXParser__WEBPACK_IMPORTED_MODULE_3__);
+
+
+
+
+/* global $ */
+
+/* harmony default export */ __webpack_exports__["default"] = (function () {
+  Object(flarum_extend__WEBPACK_IMPORTED_MODULE_1__["extend"])(flarum_components_Post__WEBPACK_IMPORTED_MODULE_2___default.a.prototype, 'oncreate', function () {
+    var postId = this.attrs.post.id();
+
+    function loadGPXFileIntoGoogleMap(map, filename) {
+      $.ajax({
+        url: filename,
+        dataType: "xml",
+        success: function success(data) {
+          console.debug("parsing GPS file " + filename);
+          var parser = new _GPXParser__WEBPACK_IMPORTED_MODULE_3___default.a.GPXParser(data, map);
+          parser.setTrackColour("#ff0000"); // Set the track line colour
+
+          parser.setTrackWidth(5); // Set the track line width
+
+          parser.setMinTrackPointDelta(0.001); // Set the minimum distance between track points
+
+          parser.centerAndZoom(data);
+          parser.addTrackpointsToMap(); // Add the trackpoints
+
+          parser.addRoutepointsToMap(); // Add the routepoints
+
+          parser.addWaypointsToMap(); // Add the waypoints
+        }
+      });
+    } //for each gpx file in this post, loop and map
+
+
+    this.$('.gpxFile').each(function (i) {
+      //console.log(this); //'this' is now a matching div with our URL and UUID
+      //let url = $(this).data('mapUrl');
+      var url = flarum_app__WEBPACK_IMPORTED_MODULE_0___default.a.forum.attribute('apiUrl') + '/fof/download';
+      url += '/' + $(this).data('fofUploadDownloadUuid');
+      url += '/' + postId;
+      url += '/' + flarum_app__WEBPACK_IMPORTED_MODULE_0___default.a.session.csrfToken;
+      var mapId = 'map-' + $(this).data('fofUploadDownloadUuid');
+      console.debug(url);
+      console.debug(mapId);
+      var mapOptions = {
+        zoom: 8,
+        mapTypeId: 'roadmap'
+      };
+      var map = new google.maps.Map(document.getElementById(mapId), mapOptions);
+      loadGPXFileIntoGoogleMap(map, url);
+    });
+  });
+});
+
+/***/ }),
+
+/***/ "./src/forum/index.js":
+/*!****************************!*\
+  !*** ./src/forum/index.js ***!
+  \****************************/
+/*! no exports provided */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var flarum_app__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! flarum/app */ "flarum/app");
+/* harmony import */ var flarum_app__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(flarum_app__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _File__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./File */ "./src/forum/File.js");
+/* harmony import */ var _gpxMap__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./gpxMap */ "./src/forum/gpxMap.js");
+
+
+
+console.debug("GPX Preview Scanning...");
+flarum_app__WEBPACK_IMPORTED_MODULE_0___default.a.initializers.add('gpx-preview', function () {
+  Object(_gpxMap__WEBPACK_IMPORTED_MODULE_2__["default"])(); // File model
+
+  flarum_app__WEBPACK_IMPORTED_MODULE_0___default.a.store.models.files = _File__WEBPACK_IMPORTED_MODULE_1__["default"];
+});
+
+/***/ }),
+
+/***/ "flarum/app":
+/*!********************************************!*\
+  !*** external "flarum.core.compat['app']" ***!
+  \********************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = flarum.core.compat['app'];
+
+/***/ }),
+
+/***/ "flarum/common/Model":
+/*!*****************************************************!*\
+  !*** external "flarum.core.compat['common/Model']" ***!
+  \*****************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = flarum.core.compat['common/Model'];
+
+/***/ }),
+
+/***/ "flarum/common/utils/mixin":
+/*!***********************************************************!*\
+  !*** external "flarum.core.compat['common/utils/mixin']" ***!
+  \***********************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = flarum.core.compat['common/utils/mixin'];
+
+/***/ }),
+
+/***/ "flarum/components/Post":
+/*!********************************************************!*\
+  !*** external "flarum.core.compat['components/Post']" ***!
+  \********************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = flarum.core.compat['components/Post'];
+
+/***/ }),
+
+/***/ "flarum/extend":
+/*!***********************************************!*\
+  !*** external "flarum.core.compat['extend']" ***!
+  \***********************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = flarum.core.compat['extend'];
+
+/***/ })
+
+/******/ });
 //# sourceMappingURL=forum.js.map
