@@ -28,7 +28,7 @@ export default class File extends mixin(Model, {
     bbcode() {
         console.log('checking')
         if (this.tag() == 'gpx' ){
-            return `[upl-image uuid=${this.uuid()} size=${this.humanSize()} url=${this.url()}]${this.baseName()}[/upl-image]`;
+            return `[upl-file uuid=${this.uuid()} size=${this.humanSize()} url=${this.url()}]${this.baseName()}[/upl-file]`;
         }
         return app.store.models.files.prototype.bbcode(this);
     }
