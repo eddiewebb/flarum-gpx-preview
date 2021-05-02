@@ -18,11 +18,6 @@ use Psr\Http\Message\ServerRequestInterface as Request;
 use Flarum\Settings\SettingsRepositoryInterface;
 
 return [
-    
-
-    (new Extend\ServiceProvider())
-        ->register(Providers\GpxPreviewProvider::class),
-
     (new Extend\Frontend('forum'))
         ->js(__DIR__ . '/js/dist/forum.js'),
 
@@ -32,8 +27,12 @@ return [
     new Extend\Locales(__DIR__ . '/resources/locale'),
 
 
+    (new Extend\ServiceProvider())
+        ->register(Providers\GpxPreviewProvider::class),
+
+
     (new Extend\View())
-    ->namespace('webbinaro-gpx-preview.templates', __DIR__.'/resources/templates'),
+    ->namespace('fof-upload.templates', __DIR__.'/resources/templates'),
 
     (new Extend\Frontend('forum'))
             ->content(function (Document $document, Request $request) {
