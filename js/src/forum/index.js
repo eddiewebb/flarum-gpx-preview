@@ -9,5 +9,6 @@ app.initializers.add('gpx-preview', () => {
     gpxMap();
 
     // File model
+    app.store.models.hardfiles = app.store.models.files 
     app.store.models.files = File;
 });
