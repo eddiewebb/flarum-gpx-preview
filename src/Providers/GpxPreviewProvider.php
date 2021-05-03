@@ -12,10 +12,9 @@ class GpxPreviewProvider extends \Flarum\Foundation\AbstractServiceProvider
 
     public function register()
     {
-       
         /** @var Util $util */
-        $util = $this->app->make(Util::class);
+        $util = $this->container->make(Util::class);
 
-        $util->addRenderTemplate($this->app->make(GpxTemplate::class));
+        $util->addRenderTemplate($this->container->make(GpxTemplate::class));
     }
 }
