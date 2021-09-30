@@ -2,11 +2,12 @@
 
 namespace Webbinaro\GpxPreview\Providers;
 
+use Flarum\Foundation\AbstractServiceProvider;
 use FoF\Upload\Helpers\Util;
 use Webbinaro\GpxPreview\Templates\GpxTemplate;
 use Flarum\Settings\SettingsRepositoryInterface;
 
-class GpxPreviewProvider extends \Flarum\Foundation\AbstractServiceProvider
+class GpxPreviewProvider extends AbstractServiceProvider
 {    
 	
 

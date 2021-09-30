@@ -26,7 +26,6 @@ return [
 
     new Extend\Locales(__DIR__ . '/resources/locale'),
 
-
     (new Extend\ServiceProvider())
         ->register(Providers\GpxPreviewProvider::class),
 

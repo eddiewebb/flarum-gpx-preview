@@ -47,4 +47,5 @@ class GpxTemplate extends \FoF\Upload\Templates\AbstractTextFormatterTemplate
     {
         return '[upl-file uuid={IDENTIFIER} size={SIMPLETEXT2} url={URL}]{SIMPLETEXT1}[/upl-file]';
     }
+
 }
