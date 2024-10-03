@@ -31,7 +31,7 @@ return [
 
 
     (new Extend\View())
-    ->namespace('fof-upload.templates', __DIR__.'/resources/templates'),
+    ->namespace('gpx-preview.templates', __DIR__.'/resources/templates'),
 
     (new Extend\Frontend('forum'))
             ->content(function (Document $document, Request $request) {

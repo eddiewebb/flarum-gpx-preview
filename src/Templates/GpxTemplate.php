@@ -31,11 +31,11 @@ class GpxTemplate extends \FoF\Upload\Templates\AbstractTextFormatterTemplate
     /**
      * The xsl template to use with this tag.
      *
-     * @return string
+     * @return View
      */
     public function template(): View
     {
-        return $this->getView('fof-upload.templates::gpx');
+        return $this->getView('gpx-preview.templates::gpx');
     }
 
     /**
