@@ -25,13 +25,12 @@ return [
         ->js(__DIR__ . '/js/dist/admin.js'),
 
     new Extend\Locales(__DIR__ . '/resources/locale'),
+    
+    (new Extend\View())
+    ->namespace('gpx-preview.templates', __DIR__.'/resources/templates'),
 
     (new Extend\ServiceProvider())
         ->register(Providers\GpxPreviewProvider::class),
-
-
-    (new Extend\View())
-    ->namespace('gpx-preview.templates', __DIR__.'/resources/templates'),
 
     (new Extend\Frontend('forum'))
             ->content(function (Document $document, Request $request) {
