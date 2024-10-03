@@ -35,7 +35,7 @@ class GpxTemplate extends \FoF\Upload\Templates\AbstractTextFormatterTemplate
      */
     public function template(): View
     {
-        return $this->getView('gpx-preview.templates::gpx');
+        return $this->getView('webbinaro-gpxpreview.templates::gpx');
     }
 
     /**
