@@ -1,7 +1,7 @@
 <?php
 
 namespace Webbinaro\GpxPreview\Templates;
-
+use Illuminate\Contracts\View\View;
 
 class GpxTemplate extends \FoF\Upload\Templates\AbstractTextFormatterTemplate
 {
@@ -33,7 +33,7 @@ class GpxTemplate extends \FoF\Upload\Templates\AbstractTextFormatterTemplate
      *
      * @return string
      */
-    public function template(): string
+    public function template(): View
     {
         return $this->getView('fof-upload.templates::gpx');
     }
