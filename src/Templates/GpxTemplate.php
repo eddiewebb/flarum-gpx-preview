@@ -39,9 +39,10 @@ class GpxTemplate extends \FoF\Upload\Contracts\Template
      *
      * @return string
      */
-    public function preview(File $file): \Illuminate\Contracts\View\View
+    public function preview(File $file): string
     {
-        return $this->getView('gpx-preview.templates::gpx');
+        //return $this->getView('gpx-preview.templates::gpx');
+        return '[upl-file uuid={IDENTIFIER} size={SIMPLETEXT2} url={URL}]{SIMPLETEXT1}[/upl-file]';
     }
 
 }
