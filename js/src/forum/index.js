@@ -9,5 +9,6 @@ app.initializers.add('gpx-preview', () => {
     gpxMap();
 
     // File model
-    app.store.models.files = File;
+    // I think this was cause of Issue #9
+    //app.store.models.files = File;
 });
