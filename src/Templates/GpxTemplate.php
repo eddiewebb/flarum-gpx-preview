@@ -7,10 +7,18 @@ use Flarum\Foundation\AbstractServiceProvider;
 use FoF\Upload\Contracts\Template;
 use FoF\Upload\File;
 use FoF\Upload\Helpers\Util;
+use Flarum\Locale\Translator;
 
 
 class GpxTemplate implements Template
 {
+    /**
+     * The user repository implementation.
+     *
+     * @var Translator
+     */
+    private Translator $trans;
+
     /**
      * @var string
      */
