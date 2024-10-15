@@ -17,7 +17,7 @@ class GpxTemplate implements Template
      *
      * @var Translator
      */
-    private Translator $trans;
+    private Translator $translator;
 
     /**
      * @var string
@@ -34,7 +34,7 @@ class GpxTemplate implements Template
      */
     public function name(): string
     {
-        return $this->trans('gpx-preview.admin.templates.gpx');
+        return $this->translator->trans('gpx-preview.admin.templates.gpx');
     }
 
     /**
@@ -42,7 +42,7 @@ class GpxTemplate implements Template
      */
     public function description(): string
     {
-        return $this->trans('gpx-preview.admin.templates.gpx.file_description');
+        return $this->translator->trans('gpx-preview.admin.templates.gpx.file_description');
     }
 
     /**
