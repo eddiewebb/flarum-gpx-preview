@@ -1,9 +1,15 @@
 <?php
 
 namespace Webbinaro\GpxPreview\Templates;
-use Illuminate\Contracts\View\View;
 
-class GpxTemplate extends \FoF\Upload\Templates\AbstractTextFormatterTemplate
+use Flarum\Extend;
+use Flarum\Foundation\AbstractServiceProvider;
+use FoF\Upload\Contracts\Template;
+use FoF\Upload\File;
+use FoF\Upload\Helpers\Util;
+
+
+class GpxTemplate extends \FoF\Upload\Contracts\Template
 {
     /**
      * @var string
@@ -31,21 +37,11 @@ class GpxTemplate extends \FoF\Upload\Templates\AbstractTextFormatterTemplate
     /**
      * The xsl template to use with this tag.
      *
-     * @return View
-     */
-    public function template(): View
-    {
-        return $this->getView('gpx-preview.templates::gpx');
-    }
-
-    /**
-     * The bbcode to be parsed.
-     *
      * @return string
      */
-    public function bbcode(): string
+    public function preview(File $file): \Illuminate\Contracts\View\View
     {
-        return '[upl-file uuid={IDENTIFIER} size={SIMPLETEXT2} url={URL}]{SIMPLETEXT1}[/upl-file]';
+        return $this->getView('gpx-preview.templates::gpx');
     }
 
 }
