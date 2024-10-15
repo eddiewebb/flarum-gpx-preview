@@ -15,25 +15,6 @@ use FoF\Upload\Templates\AbstractTextFormatterTemplate;
 class GpxTemplateTextFormatter extends AbstractTextFormatterTemplate
 {
     /**
-     * The user repository implementation.
-     *
-     * @var Translator
-     */
-    private Translator $translator;
-
-    /**
-     * Create a new controller instance.
-     *
-     * @param  Translator $translator
-     * @return void
-     */
-    public function __construct(Translator $translator)
-    {
-        $this->translator = $translator;
-    }
-
-
-    /**
      * @var string
      */
     public function tag(): string
@@ -48,7 +29,7 @@ class GpxTemplateTextFormatter extends AbstractTextFormatterTemplate
      */
     public function name(): string
     {
-        return $this->translator->trans('gpx-preview.admin.templates.gpx');
+        return $this->trans('gpx-preview.admin.templates.gpx');
     }
 
 
@@ -62,7 +43,7 @@ class GpxTemplateTextFormatter extends AbstractTextFormatterTemplate
      */
     public function description(): string
     {
-        return $this->translator->trans('gpx-preview.admin.templates.gpx.file_description');
+        return $this->trans('gpx-preview.admin.templates.gpx.file_description');
     }
 
     /**
