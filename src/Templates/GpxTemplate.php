@@ -20,6 +20,18 @@ class GpxTemplate implements Template
     private Translator $translator;
 
     /**
+     * Create a new controller instance.
+     *
+     * @param  UserRepository  $users
+     * @return void
+     */
+    public function __construct(Translator $translator)
+    {
+        $this->translator = $translator;
+    }
+
+
+    /**
      * @var string
      */
     public function tag(): string
