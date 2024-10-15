@@ -22,7 +22,7 @@ class GpxTemplate implements Template
     /**
      * Create a new controller instance.
      *
-     * @param  UserRepository  $users
+     * @param  Translator $translator
      * @return void
      */
     public function __construct(Translator $translator)
