@@ -9,12 +9,15 @@ use FoF\Upload\File;
 use FoF\Upload\Helpers\Util;
 
 
-class GpxTemplate extends \FoF\Upload\Contracts\Template
+class GpxTemplate implements Template
 {
     /**
      * @var string
      */
-    protected $tag = 'gpx';
+    public function tag(): string
+    {
+        return 'gpx';
+    }
 
     /**
      * The human readable name of the template.
@@ -39,8 +42,7 @@ class GpxTemplate extends \FoF\Upload\Contracts\Template
      *
      * @return string
      */
-    public function preview(File $file): string
-    {
+    public function preview(File $file): string {
         //return $this->getView('gpx-preview.templates::gpx');
         return '[upl-file uuid={IDENTIFIER} size={SIMPLETEXT2} url={URL}]{SIMPLETEXT1}[/upl-file]';
     }
