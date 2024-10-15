@@ -1,6 +1,4 @@
 import app from 'flarum/app';
-import File from './File';
-
 import gpxMap from './gpxMap';
 
 console.debug("GPX Preview Scanning...");
