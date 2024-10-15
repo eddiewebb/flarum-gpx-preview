@@ -5,6 +5,7 @@ namespace Webbinaro\GpxPreview\Providers;
 use Flarum\Foundation\AbstractServiceProvider;
 use FoF\Upload\Helpers\Util;
 use Webbinaro\GpxPreview\Templates\GpxTemplate;
+use Webbinaro\GpxPreview\Templates\GpxTemplateTextFormatter;
 
 class GpxPreviewProvider extends AbstractServiceProvider
 {    
@@ -13,6 +14,6 @@ class GpxPreviewProvider extends AbstractServiceProvider
         /** @var Util $util */
         $util = $this->container->make(Util::class);
 
-        $util->addRenderTemplate($this->container->make(GpxTemplate::class));
+        $util->addRenderTemplate($this->container->make(GpxTemplateTextFormatter::class));
     }
 }

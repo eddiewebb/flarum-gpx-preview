@@ -8,6 +8,7 @@ use FoF\Upload\Contracts\Template;
 use FoF\Upload\File;
 use FoF\Upload\Helpers\Util;
 use Flarum\Locale\Translator;
+use Illuminate\Contracts\View\View;
 
 
 class GpxTemplate implements Template
@@ -47,6 +48,12 @@ class GpxTemplate implements Template
     public function name(): string
     {
         return $this->translator->trans('gpx-preview.admin.templates.gpx');
+    }
+
+
+    protected function getView(string $view, array $arguments = []): View
+    {
+        return $this->getView('gpx-preview.templates::gpx');
     }
 
     /**
