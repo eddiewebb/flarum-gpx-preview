@@ -32,12 +32,6 @@ class GpxTemplateTextFormatter extends AbstractTextFormatterTemplate
         return $this->trans('gpx-preview.admin.templates.gpx');
     }
 
-
-    public function template(): View
-    {
-        return $this->getView('gpx-preview.templates::gpx');
-    }
-
     /**
      * {@inheritdoc}
      */
@@ -46,14 +40,13 @@ class GpxTemplateTextFormatter extends AbstractTextFormatterTemplate
         return $this->trans('gpx-preview.admin.templates.gpx.file_description');
     }
 
-    /**
-     * The xsl template to use with this tag.
-     *
-     * @return string
-     */
+    public function template(): View
+    {
+        return $this->getView('gpx-preview.templates::gpx');
+    }
+
     public function bbcode(): string {
-        //return $this->getView('gpx-preview.templates::gpx');
-        return '[gpx uuid={IDENTIFIER} size={SIMPLETEXT2} url={URL}]{SIMPLETEXT1}[/gpx]';
+        return '[upl-gpx uuid={IDENTIFIER} size={SIMPLETEXT2} url={URL}]{SIMPLETEXT1}[/upl-gpx]';
     }
 
 }
